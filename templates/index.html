@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Personagens</title>
+</head>
+<body>
+    <h1>Lista de Personagens</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Status</th>
+                <th>Espécie</th>
+                <th>Gênero</th>
+                <th>Última Localização</th>
+                <th>Imagem</th>
+                <th>Episódios</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for personagem in personagens %}
+            <tr>
+                <td>{{ personagem.id }}</td>
+                <td>{{ personagem.nome }}</td>
+                <td>{{ personagem.status }}</td>
+                <td>{{ personagem.species }}</td>
+                <td>{{ personagem.gender }}</td>
+                <td>{{ personagem.location }}</td>
+                <td><img src="{{ personagem.imagem }}" alt="{{ personagem.nome }}" width="50"></td>
+                <td>{{ personagem.episodios }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

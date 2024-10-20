@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 import requests
 
 app = Flask(__name__)
@@ -23,12 +23,11 @@ class Character(db.Model):
 
 
 
-def get_data_from_api(page=1):
+def get(page=1):
     url = f'https://rickandmortyapi.com/api/character?page={page}'
     resposta = requests.get(url)
-    if resposta.status_code == 200:
-        return resposta.json()
-    return None
+    return resposta.json()
+
 
 
 def armazenar(data):
@@ -48,18 +47,23 @@ def armazenar(data):
 
 @app.route('/', methods=['GET'])
 def guardar():
-    data_inicio = get_data_from_api(1)
+    data_inicio = get(1)
     
     
     total_pages = data_inicio['info']['pages']
     armazenar(data_inicio)
 
     for page in range(2, total_pages + 1):
-        data = get_data_from_api(page)
+        data = get(page)
         if data:
             armazenar(data)
 
     return jsonify({"message": "Dados inseridos com sucesso!"}), 200
+
+@app.route('/personagens', methods=['GET'])
+def mostrar():
+    personagens = Character.query.all()
+    return render_template('index.html', personagens=personagens)
 
 if __name__ == '__main__':
     app.run()
